@@ -4,6 +4,5 @@ lambda_timeout        = 10
 lambda_memory_size    = 512
 frontend_index_document = "index.html"
 ip_allowlist = [
-  "93.235.89.210/32",
   "20.218.226.24/32"
 ]
