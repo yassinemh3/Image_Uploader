@@ -11,7 +11,6 @@ Uploaded images are stored in an **Amazon S3** bucket and publicly viewable. Opt
 - Upload images via a responsive frontend (TailwindCSS)
 - Store and serve images from AWS S3
 - Serverless deployment via AWS Lambda and API Gateway
-- Publicly viewable images (configurable)
 - Delete images with a single click
 - Infrastructure managed with Terraform
 - Optional IP allowlisting via AWS WAF
@@ -74,7 +73,7 @@ Terraform will:
 
 ### Uploading Images
 
-- Visit the API Gateway URL (e.g. https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/) to:
+- Visit the API Gateway URL [(://ye.g. httpsour-api-id.execute-api.us-east-1.amazonaws.com/prod/)](https://b0ixlzmenh.execute-api.eu-central-1.amazonaws.com/prod) to:
 
 - Upload images
 
@@ -86,4 +85,9 @@ Terraform will:
 Uploaded files are stored at:
 ```bash
 https://<bucket-name>.s3.amazonaws.com/<file-name>
+```
+##🧹 Cleanup
+To delete all resources:
+```bash
+terraform destroy
 ```
