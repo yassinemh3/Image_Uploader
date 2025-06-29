@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Uploader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-10">
+  <div class="max-w-2xl mx-auto px-6 py-8 bg-white shadow-md rounded-lg relative">
+
+    <% if (status) { %>
+      <div id="toast"
+           class="absolute inset-x-0 top-4 mx-auto w-max px-4 py-2 rounded-md text-white
+                  <%= status === 'uploaded' ? 'bg-green-600' : 'bg-red-600' %>">
+        <%= status === 'uploaded' ? 'Image successfully uploaded' : 'Image successfully deleted' %>
+      </div>
+    <% } %>
+
+    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+      Upload an Image
+    </h1>
+
+    <form action="/prod/upload" method="post" enctype="multipart/form-data" class="space-y-4">
+      <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-4">
+        <label for="file-upload"
+               class="cursor-pointer inline-flex items-center px-5 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+               d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0l4 4m-4-4L8 8"/></svg>
+          Choose File
+        </label>
+        <input id="file-upload" name="file" type="file" required class="hidden" onchange="updateFileName(this)">
+        <span id="file-name" class="text-sm text-gray-500 truncate max-w-[180px]">No file selected</span>
+        <button type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">
+          Upload
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-10">
+      <% if (images && images.length > 0) { %>
+        <h2 class="text-lg font-medium text-gray-700 mb-4">Uploaded Images</h2>
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2">
+          <% images.forEach(function(image) { %>
+            <div class="border border-gray-200 rounded-md overflow-hidden bg-gray-50 shadow-sm hover:shadow-md transition">
+              <img src="https://<%= settings.s3_bucket_name %>.s3.amazonaws.com/<%= image %>"
+                   alt="<%= image %>" class="w-full h-48 object-cover">
+              <div class="flex justify-between items-center px-4 py-2">
+                <span class="text-sm text-gray-600 truncate" title="<%= image %>"><%= image %></span>
+                <form method="post" action="/prod/delete/<%= image %>">
+                  <button type="submit"
+                          class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-center text-gray-500 mt-6">No images uploaded yet.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    function updateFileName(input) {
+      const fileName = input.files.length > 0 ? input.files[0].name : "No file selected";
+      document.getElementById('file-name').textContent = fileName;
+    }
+    // Blendet den Toast nach 4 s aus
+    window.addEventListener('DOMContentLoaded', () => {
+      const toast = document.getElementById('toast');
+      if (toast) setTimeout(() => toast.remove(), 4000);
+    });
+  </script>
+</body>
+</html>
