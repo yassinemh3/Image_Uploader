@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
   <meta charset="UTF-8">
   <title>Image Uploader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
 </head>
-<body class="bg-gray-100 min-h-screen py-10">
-  <div class="max-w-2xl mx-auto px-6 py-8 bg-white shadow-md rounded-lg relative">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen py-10 transition-colors duration-300">
+  <div class="max-w-2xl mx-auto px-6 py-8 bg-white dark:bg-gray-800 shadow-md rounded-lg relative">
+
+    <!-- Dark Mode Toggle -->
+    <div class="flex justify-end mb-4">
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-gray-600 dark:text-gray-300">Dark Mode</span>
+        <label for="darkSwitch" class="relative inline-block w-11 h-6 cursor-pointer">
+          <input type="checkbox" id="darkSwitch" class="peer sr-only">
+          <span class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600"></span>
+          <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-full"></span>
+        </label>
+      </div>
+    </div>
 
     <% if (status) { %>
       <div id="toast"
@@ -17,38 +34,38 @@
       </div>
     <% } %>
 
-    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+    <h1 class="text-2xl font-semibold text-center mb-6">
       Upload an Image
     </h1>
 
-    <form action="/prod/upload" method="post" enctype="multipart/form-data" class="space-y-4">
-      <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-4">
-        <label for="file-upload"
-               class="cursor-pointer inline-flex items-center px-5 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24"
-               stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-               d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0l4 4m-4-4L8 8"/></svg>
-          Choose File
-        </label>
-        <input id="file-upload" name="file" type="file" required class="hidden" onchange="updateFileName(this)">
-        <span id="file-name" class="text-sm text-gray-500 truncate max-w-[180px]">No file selected</span>
-        <button type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">
-          Upload
-        </button>
-      </div>
-    </form>
+<form id="upload-form" action="/prod/upload" method="post" enctype="multipart/form-data" class="space-y-4">
+  <div id="drop-zone"
+       class="flex flex-col items-center justify-center px-6 py-10 border-2 border-dashed rounded-lg cursor-pointer transition bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600">
+    <input type="file" id="file-upload" name="file" class="hidden" required>
+    <p class="text-sm text-gray-500 dark:text-gray-300 mb-2">
+      Drag & drop an image here or click to select
+    </p>
+    <span id="file-name" class="text-sm text-gray-600 dark:text-gray-400 truncate max-w-[180px]">No file selected</span>
+  </div>
+
+  <div class="flex justify-center">
+    <button type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">
+      Upload
+    </button>
+  </div>
+</form>
 
     <div class="mt-10">
       <% if (images && images.length > 0) { %>
-        <h2 class="text-lg font-medium text-gray-700 mb-4">Uploaded Images</h2>
+        <h2 class="text-lg font-medium mb-4">Uploaded Images</h2>
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2">
           <% images.forEach(function(image) { %>
-            <div class="border border-gray-200 rounded-md overflow-hidden bg-gray-50 shadow-sm hover:shadow-md transition">
+            <div class="border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-700 shadow-sm hover:shadow-md transition">
               <img src="https://<%= settings.s3_bucket_name %>.s3.amazonaws.com/<%= image %>"
                    alt="<%= image %>" class="w-full h-48 object-cover">
               <div class="flex justify-between items-center px-4 py-2">
-                <span class="text-sm text-gray-600 truncate" title="<%= image %>"><%= image %></span>
+                <span class="text-sm truncate" title="<%= image %>"><%= image %></span>
                 <form method="post" action="/prod/delete/<%= image %>">
                   <button type="submit"
                           class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
@@ -60,7 +77,7 @@
           <% }) %>
         </div>
       <% } else { %>
-        <p class="text-center text-gray-500 mt-6">No images uploaded yet.</p>
+        <p class="text-center text-gray-500 dark:text-gray-400 mt-6">No images uploaded yet.</p>
       <% } %>
     </div>
   </div>
@@ -70,10 +87,67 @@
       const fileName = input.files.length > 0 ? input.files[0].name : "No file selected";
       document.getElementById('file-name').textContent = fileName;
     }
-    // Blendet den Toast nach 4 s aus
+
     window.addEventListener('DOMContentLoaded', () => {
+      const html = document.documentElement;
+      const toggle = document.getElementById('darkSwitch');
+
+      const applyTheme = (isDark) => {
+        if (isDark) {
+          html.classList.add('dark');
+          localStorage.theme = 'dark';
+          toggle.checked = true;
+        } else {
+          html.classList.remove('dark');
+          localStorage.theme = 'light';
+          toggle.checked = false;
+        }
+      };
+
+      // Initial theme setup
+      if (localStorage.theme === 'dark' ||
+          (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        applyTheme(true);
+      } else {
+        applyTheme(false);
+      }
+
+      toggle.addEventListener('change', (e) => {
+        applyTheme(e.target.checked);
+      });
+
+      // Hide toast
       const toast = document.getElementById('toast');
       if (toast) setTimeout(() => toast.remove(), 4000);
+    });
+  </script>
+  <script>
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file-upload");
+    const fileNameSpan = document.getElementById("file-name");
+  
+    dropZone.addEventListener("click", () => fileInput.click());
+  
+    fileInput.addEventListener("change", () => {
+      fileNameSpan.textContent = fileInput.files[0]?.name || "No file selected";
+    });
+  
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("border-blue-500", "bg-blue-50", "dark:bg-blue-900");
+    });
+  
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("border-blue-500", "bg-blue-50", "dark:bg-blue-900");
+    });
+  
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("border-blue-500", "bg-blue-50", "dark:bg-blue-900");
+      if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        fileNameSpan.textContent = e.dataTransfer.files[0].name;
+      }
     });
   </script>
 </body>
