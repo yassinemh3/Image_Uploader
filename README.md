@@ -14,6 +14,7 @@ Uploaded images are stored in an **Amazon S3** bucket and publicly viewable. Opt
 - Delete images with a single click
 - Infrastructure managed with Terraform
 - Optional IP allowlisting via AWS WAF
+- Dark Mode Toggle
 
 ---
 ## ⚙️ Prerequisites
@@ -74,9 +75,9 @@ Terraform will:
 ### Uploading Images
 
 - Visit the API Gateway URL [link](https://b0ixlzmenh.execute-api.eu-central-1.amazonaws.com/prod) to:
-  - Upload images
-  - View uploaded images
-  - Delete them via UI
+  - Upload images via file picker or drag & drop
+  - View and delete uploaded images
+  - Toggle between light and dark modes for better accessibility
 
 ### S3 Bucket
 Uploaded files are stored at:
