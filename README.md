@@ -73,20 +73,18 @@ Terraform will:
 
 ### Uploading Images
 
-- Visit the API Gateway URL [(://ye.g. httpsour-api-id.execute-api.us-east-1.amazonaws.com/prod/)](https://b0ixlzmenh.execute-api.eu-central-1.amazonaws.com/prod) to:
-
-- Upload images
-
-- View uploaded images
-
-- Delete them via UI
+- Visit the API Gateway URL [link](https://b0ixlzmenh.execute-api.eu-central-1.amazonaws.com/prod) to:
+  - Upload images
+  - View uploaded images
+  - Delete them via UI
 
 ### S3 Bucket
 Uploaded files are stored at:
 ```bash
 https://<bucket-name>.s3.amazonaws.com/<file-name>
 ```
-##🧹 Cleanup
+
+## 🧹 Cleanup
 To delete all resources:
 ```bash
 terraform destroy
