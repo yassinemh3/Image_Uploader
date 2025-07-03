@@ -90,3 +90,13 @@ To delete all resources:
 ```bash
 terraform destroy
 ```
+## 🖼️ Screenshots
+
+### 🔆 Light Mode
+![Light Mode](screenshots/light-mode.png)
+
+### 🌙 Dark Mode
+![Dark Mode](screenshots/dark-mode.png)
+
+### 📤 After Uploading an Image
+![Uploaded Image](screenshots/uploaded-image.png)
