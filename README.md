@@ -99,4 +99,4 @@ terraform destroy
 ![Dark Mode](static/screenshots/dark-mode.png)
 
 ### 📤 After Uploading an Image
-![Uploaded Image](static/screenshots/uploaded-image.png)
+![Uploaded Image](static/screenshots/upload-image.png)
