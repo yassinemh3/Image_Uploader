@@ -93,10 +93,10 @@ terraform destroy
 ## 🖼️ Screenshots
 
 ### 🔆 Light Mode
-![Light Mode](screenshots/light-mode.png)
+![Light Mode](static/screenshots/light-mode.png)
 
 ### 🌙 Dark Mode
-![Dark Mode](screenshots/dark-mode.png)
+![Dark Mode](static/screenshots/dark-mode.png)
 
 ### 📤 After Uploading an Image
-![Uploaded Image](screenshots/uploaded-image.png)
+![Uploaded Image](static/screenshots/uploaded-image.png)
